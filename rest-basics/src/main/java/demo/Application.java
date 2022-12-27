@@ -1,13 +1,10 @@
 package demo;
 
+import java.util.Arrays;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.AbstractJsonpResponseBodyAdvice;
-
-import java.util.Arrays;
 
 @SpringBootApplication
 public class Application {
@@ -16,13 +13,13 @@ public class Application {
   SpringApplication.run(Application.class, args);
  }
 
- @ControllerAdvice
+ /*@ControllerAdvice
  public static class JsonpAdvice extends AbstractJsonpResponseBodyAdvice {
 
   public JsonpAdvice() {
    super("callback");
   }
- }
+ }*/
 
  @Bean
  CommandLineRunner init(CustomerRepository r) {

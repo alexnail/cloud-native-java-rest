@@ -1,6 +1,7 @@
 package actors;
 
-import org.springframework.boot.context.embedded.EmbeddedServletContainerInitializedEvent;
+import java.net.URI;
+import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -8,8 +9,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.client.Traverson;
 import org.springframework.web.client.RestTemplate;
-
-import java.net.URI;
 
 @Configuration
 public class TraversonConfiguration {
@@ -20,9 +19,8 @@ public class TraversonConfiguration {
 
  //@formatter:off
  @EventListener
- public void embeddedPortAvailable(
-    EmbeddedServletContainerInitializedEvent e) {
-  this.port = e.getEmbeddedServletContainer().getPort();
+ public void embeddedPortAvailable(ServletWebServerInitializedEvent e) {
+  this.port = e.getWebServer().getPort();
   this.baseUri = URI.create("http://localhost:" + this.port + '/');
  }
  //@formatter:on

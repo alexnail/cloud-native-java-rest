@@ -1,31 +1,27 @@
 package demo;
 
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.ResourceAssembler;
-import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.mvc.method.annotation
-        .MvcUriComponentsBuilder;
-
 import java.net.URI;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.RepresentationModelAssembler;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @Component
-class CustomerResourceAssembler implements
- ResourceAssembler<Customer, Resource<Customer>> {
+class CustomerResourceAssembler implements RepresentationModelAssembler<Customer, EntityModel<Customer>> {
 
  @Override
- public Resource<Customer> toResource(Customer customer) {
-
-  Resource<Customer> customerResource = new Resource<>(customer);//<1>
+ public EntityModel<Customer> toModel(Customer entity) {
+  EntityModel<Customer> customerResource = new EntityModel<>(entity);//<1>
   URI photoUri = MvcUriComponentsBuilder
-   .fromMethodCall(
-    MvcUriComponentsBuilder.on(CustomerProfilePhotoRestController.class).read(
-     customer.getId())).buildAndExpand().toUri();
+          .fromMethodCall(
+                  MvcUriComponentsBuilder.on(CustomerProfilePhotoRestController.class).read(
+                          entity.getId())).buildAndExpand().toUri();
 
   URI selfUri = MvcUriComponentsBuilder
-   .fromMethodCall(
-    MvcUriComponentsBuilder.on(CustomerHypermediaRestController.class).get(
-     customer.getId())).buildAndExpand().toUri();
+          .fromMethodCall(
+                  MvcUriComponentsBuilder.on(CustomerHypermediaRestController.class).get(
+                          entity.getId())).buildAndExpand().toUri();
 
   customerResource.add(new Link(selfUri.toString(), "self"));
   customerResource.add(new Link(photoUri.toString(), "profile-photo"));
