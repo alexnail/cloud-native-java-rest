@@ -19,21 +19,20 @@ public class CustomerControllerAdvice {
     // <2>
     @ExceptionHandler(CustomerNotFoundException.class)
     ResponseEntity<VndErrors> notFoundException(CustomerNotFoundException e) {
-        return this.error(e, HttpStatus.NOT_FOUND, e.getCustomerId() + "");
+        return error(e, HttpStatus.NOT_FOUND, e.getCustomerId() + "");
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     ResponseEntity<VndErrors> assertionException(IllegalArgumentException ex) {
-        return this.error(ex, HttpStatus.NOT_FOUND, ex.getLocalizedMessage());
+        return error(ex, HttpStatus.NOT_FOUND, ex.getLocalizedMessage());
     }
 
     // <3>
     private <E extends Exception> ResponseEntity<VndErrors> error(E error, HttpStatus httpStatus, String logref) {
-        String msg = Optional.of(error.getMessage()).orElse(
-                error.getClass().getSimpleName());
+        String msg = Optional.of(error.getMessage())
+                .orElse(error.getClass().getSimpleName());
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(this.vndErrorMediaType);
-        return new ResponseEntity<>(new VndErrors(logref, msg), httpHeaders,
-                httpStatus);
+        httpHeaders.setContentType(vndErrorMediaType);
+        return new ResponseEntity<>(new VndErrors(logref, msg), httpHeaders, httpStatus);
     }
 }
